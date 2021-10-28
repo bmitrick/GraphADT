@@ -33,7 +33,7 @@ public class Graph implements Serializable{
         
         //Determine the number of edges needed for the graph1
         int chosen = (numVertices*(numVertices-1))/2;
-        int edgeNum = (int) (0.3 * chosen);
+        int edgeNum = (int) (0.8 * chosen);
         
         //Generate the edges for each entry in the adjacency list
         generateEdges(edgeNum, isDirected);
@@ -171,7 +171,7 @@ public class Graph implements Serializable{
      * 
      * @param traversal the ArrayList to save the DFS to
      * @param startingValue the vertex to start the DFS with
-     * @param visited an array of visited verticies
+     * @param visited an array of visited vertices 
      */
     public void DFS(ArrayList<Integer> traversal, int startingValue, ArrayList<Integer> visited){ 
         visited.add(startingValue);
@@ -215,12 +215,26 @@ public class Graph implements Serializable{
         return clusters;
     }
     
+    /**
+     * Finds the next unvisited node in a graph after a list of visited nodes is passed in
+     * 
+     * @param visited an ArrayList of all the visited nodes
+     * @return the index of the next unvisited node
+     */
     private int findNextUnvisited(ArrayList<Integer> visited){
         for(int i = 0; i < adjacencyList.size(); i++){
             if (!visited.contains(i)) return i;
         }
         
         return 0;
+    }
+    
+    public ArrayList<String> topologicalSort(){
+        ArrayList<String> sorted = new ArrayList<>();
+        
+        
+        
+        return sorted;
     }
     
     //Below are mostly just helper functions in order to make testing easier

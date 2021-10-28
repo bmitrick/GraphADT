@@ -15,7 +15,7 @@ public class GraphADT {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        Graph graph = new Graph(6,  false);
+        Graph graph = new Graph(100,  false);
         
         System.out.println(graph.verifyUndirected());
         
