@@ -5,8 +5,6 @@
  */
 package graphadt;
 
-import java.io.IOException;
-
 /**
  *
  * @author Bmitr
@@ -17,20 +15,16 @@ public class GraphADT {
      * @param args the command line arguments
      */
     public static void main(String[] args){
-        Graph graph = new Graph(10000, false);
+        Graph graph = new Graph(6,  false);
         
-        //System.out.print(graph.verifyUndirected());
+        System.out.println(graph.verifyUndirected());
+        
+        System.out.println(graph.adjacencyListToStringBuilder());
+        System.out.println(graph.connectedComponentsToStringBuilder());
         
         
+      
         /*
-        //Saves graph as "readable" file
-        try {
-            graph.saveToFile();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GraphADT.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
-        
         System.out.println("BINARY TEST WITH SERIALIZER CLASS:");
         //Attempts to serialize a graph to a given txt file
         try{
@@ -49,6 +43,6 @@ public class GraphADT {
         }catch (IOException ex){
             System.out.println("Error in serialization");
         }
-        
+        */ 
     }
 }
