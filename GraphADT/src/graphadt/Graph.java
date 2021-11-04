@@ -5,16 +5,13 @@
  */
 package graphadt;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Bmitr
  */
-public class Graph implements Serializable{
+public class Graph {
     
     private ArrayList<ArrayList<Integer>> adjacencyList;
 
@@ -33,7 +30,7 @@ public class Graph implements Serializable{
         
         //Determine the number of edges needed for the graph1
         int chosen = (numVertices*(numVertices-1))/2;
-        int edgeNum = (int) (0.3 * chosen);
+        int edgeNum = (int) (0.8 * chosen);
         
         //Generate the edges for each entry in the adjacency list
         generateEdges(edgeNum, isDirected);
@@ -76,94 +73,7 @@ public class Graph implements Serializable{
                 }
 
             }  
-        }
-        
-        /*
-        if (isDirected){
-            if(edgeNum >= adjacencyList.size()){
-                //Randomly assigns every node 1 edge
-                for(int i = 0; i < adjacencyList.size(); i++){
-                    int randomVertex = (int) (Math.random()*(adjacencyList.size()));
-
-                    while (randomVertex == i || adjacencyList.get(i).contains(randomVertex)){
-                        randomVertex = (int) (Math.random()*(adjacencyList.size()));
-                    }
-
-                    adjacencyList.get(i).add(randomVertex);
-                }
-
-                edgesToAssign = edgesToAssign - adjacencyList.size();
-
-                while(edgesToAssign > 0){
-                    int randomStartVertex = (int) (Math.random()*(adjacencyList.size()));
-                    int randomEndVertex = (int) (Math.random()*(adjacencyList.size()));
-
-                    //Verifies edge does not already exist and that the created edge does not lead an edge to itself
-                    if(!adjacencyList.get(randomStartVertex).contains(randomEndVertex) && !adjacencyList.get(randomEndVertex).contains(randomStartVertex) && randomStartVertex != randomEndVertex){
-                        adjacencyList.get(randomStartVertex).add(randomEndVertex);
-
-                        edgesToAssign--;
-                    }
-
-                }
-            } else {
-                for(int i = 0; i < edgeNum; i++){
-                    int randomStartVertex = (int) (Math.random()*(adjacencyList.size()));
-                    int randomEndVertex = (int) (Math.random()*(adjacencyList.size()));
-                    
-                    while (randomStartVertex  == randomEndVertex || adjacencyList.get(randomStartVertex).contains(randomEndVertex)){
-                        randomEndVertex = (int) (Math.random()*(adjacencyList.size()));
-                    }
-                    
-                    adjacencyList.get(i).add(randomEndVertex);
-                }
-            }
-        }else{
-            if (edgeNum >= adjacencyList.size()){
-                //Randomly assigns every node 1 edge
-                for(int i = 0; i < adjacencyList.size(); i++){
-                    int randomVertex = (int) (Math.random()*(adjacencyList.size()));
-
-                    while (randomVertex == i || adjacencyList.get(randomVertex).contains(i)){
-                        randomVertex = (int) (Math.random()*(adjacencyList.size()));
-                    }
-
-                    adjacencyList.get(i).add(randomVertex);
-                    adjacencyList.get(randomVertex).add(i);
-                }
-
-                edgesToAssign = edgesToAssign - adjacencyList.size();
-
-                while(edgesToAssign > 0){
-                    int randomStartVertex = (int) (Math.random()*(adjacencyList.size()));
-                    int randomEndVertex = (int) (Math.random()*(adjacencyList.size()));
-
-                    //Verifies edge does not already exist and that the created edge does not lead an edge to itself
-                    if(randomStartVertex != randomEndVertex && !adjacencyList.get(randomEndVertex).contains(randomStartVertex)){
-                        adjacencyList.get(randomStartVertex).add(randomEndVertex);
-                        adjacencyList.get(randomEndVertex).add(randomStartVertex);
-
-
-                        edgesToAssign--;
-                    }
-
-                }
-            }else {
-                for(int i = 0; i < edgeNum; i++){
-                    int randomStartVertex = (int) (Math.random()*(adjacencyList.size()));
-                    int randomEndVertex = (int) (Math.random()*(adjacencyList.size()));
-                    
-                    while (randomStartVertex  == randomEndVertex || adjacencyList.get(randomStartVertex).contains(randomEndVertex)){
-                        randomEndVertex = (int) (Math.random()*(adjacencyList.size()));
-                    }
-                    
-                    adjacencyList.get(randomStartVertex).add(randomEndVertex);
-                    adjacencyList.get(randomEndVertex).add(randomStartVertex);
-                }
-            }
-            
-        }*/
-        
+        } 
     }
     
     /**
@@ -171,7 +81,7 @@ public class Graph implements Serializable{
      * 
      * @param traversal the ArrayList to save the DFS to
      * @param startingValue the vertex to start the DFS with
-     * @param visited an array of visited verticies
+     * @param visited an array of visited vertices 
      */
     public void DFS(ArrayList<Integer> traversal, int startingValue, ArrayList<Integer> visited){ 
         visited.add(startingValue);
@@ -215,6 +125,12 @@ public class Graph implements Serializable{
         return clusters;
     }
     
+    /**
+     * Finds the next unvisited node in a graph after a list of visited nodes is passed in
+     * 
+     * @param visited an ArrayList of all the visited nodes
+     * @return the index of the next unvisited node
+     */
     private int findNextUnvisited(ArrayList<Integer> visited){
         for(int i = 0; i < adjacencyList.size(); i++){
             if (!visited.contains(i)) return i;
@@ -223,25 +139,49 @@ public class Graph implements Serializable{
         return 0;
     }
     
-    //Below are mostly just helper functions in order to make testing easier
-     
     /**
-     * Verifies that a given graph is undirected
+     * Checks if a given vertex has incoming edges
      * 
-     * @return true if the graph is undirected, false otherwise
+     * @param adjList adjacency list of graph in question
+     * @param vertex vertex to check for incoming edges
+     * @return if the vertex has any incoming edges
      */
-    public boolean verifyUndirected(){
-        for(int i = 0; i < adjacencyList.size(); i++){
-            for(int j = 0; j < adjacencyList.get(i).size(); j++){
-                int connectedVertex = adjacencyList.get(i).get(j);
-                
-                if(!adjacencyList.get(connectedVertex).contains(i)) return false;
+    public boolean hasIncomingEdges(ArrayList<ArrayList<Integer>> adjList, int vertex){
+        for(int i = 0; i < adjList.size(); i++){
+            if(adjList.get(i).contains(vertex)) return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Topologically sorts graph
+     * @return the topological traversal of a graph as a string
+     */
+    public String topologicalSort(){
+        ArrayList<ArrayList<Integer>> workingAdjList = (ArrayList) adjacencyList.clone();
+        ArrayList<Integer> visited = new ArrayList<>();
+        
+        while (visited.size() < workingAdjList.size()){
+            boolean noNodeWithNoIncomingEdgesExists = true;
+        
+            for(int i = 0; i < workingAdjList.size(); i++){
+                if(!hasIncomingEdges(workingAdjList, i) && !visited.contains(i)){
+                    visited.add(i);
+                    workingAdjList.set(i, new ArrayList<Integer>());
+                    noNodeWithNoIncomingEdgesExists = false;
+                }
+            }
+            
+            if (noNodeWithNoIncomingEdgesExists){
+                return "Cannot be topologically sorted";
             }
         }
         
-        return true;
+        
+        return visited.toString();
     }
-    
+        
     /**
      * Returns a StringBuilder output representing the adjacency list of the graph 
      * 
@@ -278,35 +218,5 @@ public class Graph implements Serializable{
         }
         
         return returnable;
-    }
-    
-    //I added the below functions as well as the Serializer class in order to save preconstructed graphs so I don't have to regenerate large ones
-    /**
-     * Saves the adjacency list as a readable output to a file
-     * @throws java.io.FileNotFoundException
-     */
-    public void saveToFile() throws FileNotFoundException{
-        try (PrintWriter out = new PrintWriter("graph.txt")) {
-            out.println(adjacencyListToStringBuilder());
-        }
-    }
-    
-    @Override
-    public boolean equals(Object g) {
-        if (g instanceof Graph) {
-            Graph replicaGraph = (Graph) g;
-
-            if (replicaGraph.getAdjacencyList().equals(this.adjacencyList)) return true;
-        }
-        return false;
-    }
-    
-    /**
-     * getter for adjacencyList
-     * 
-     *  @return adjacencyList
-     */
-    public ArrayList<ArrayList<Integer>> getAdjacencyList() {
-        return adjacencyList;
     }
 }
