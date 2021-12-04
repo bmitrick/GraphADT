@@ -5,6 +5,8 @@
  */
 package graphadt;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Bmitr
@@ -15,130 +17,182 @@ public class GraphADT {
      * @param args the command line arguments
      */
     public static void main(String[] args){
+        testFloyd();
+    }
+    
+    private static int[][] makeRandomAdjMatrix(int nodes){
+        int[][] matrix = new int[nodes][nodes];
+        
+        for(int i = 0; i < nodes; i++){
+            for(int j = 0; j < nodes; j++){
+                if (i == j) matrix[i][j] = 0;
+                else{
+                    //Randomly determines if a node will be connected to another or not. Has a 50/50 chance to be connected
+                
+                    //If it is connected, it will be assigned a random weight in the range 1 to 11
+                    if(Math.random() < 0.5) matrix[i][j] = (int) (Math.random() * 10)+1;
+
+                    //If it is not connected, it will have value 999999 for convenience sake
+                    else matrix[i][j] = 999999;
+                }
+            }
+        }
+        
+        return matrix;
+    }
+    
+    private static void testFloyd(){
         long start;
         long end;
         
-        //Question 1
         
-        //Undirected 10 node
+        //Floyd's testing
+        
+        //Attempting Floyd's on a 4 node matrix
         start = System.currentTimeMillis();
-        Graph undirected10 = new Graph(10,  false);
-        System.out.println(undirected10.adjacencyListToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to generate and print an undirected graph with 10 nodes : " + (end- start) + " ms");
-        System.out.println();
-        System.out.println();
-        
-        
-        //Undirected 100 node
-        start = System.currentTimeMillis();
-        Graph undirected100 = new Graph(100,  false);
-        System.out.println(undirected100.adjacencyListToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to generate and print an undirected graph with 100 nodes : " + (end- start) + " ms");
-        System.out.println();
-        System.out.println();
-        
-        
-        //Undireted 1000 node
-        start = System.currentTimeMillis();
-        Graph undirected1000 = new Graph(1000,  false);
-        System.out.println(undirected1000.adjacencyListToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to generate and print an undirected graph with 1000 nodes : " + (end- start) + " ms");
-        System.out.println();
-        System.out.println();
-        
+//        int[][] matrix1  = { {0, 999999, 3, 999999},
+//                            {2, 0, 999999, 999999},
+//                            {999999,7, 0, 1},
+//                            {6, 999999, 999999, 0}};
 
-        //Undirected 10000 node
-        start = System.currentTimeMillis();
-        Graph undirected10000 = new Graph(10000,  false);
-        System.out.println(undirected10000.adjacencyListToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to generate and print an undirected graph with 10000 nodes : " + (end- start) + " ms");
+        int[][] matrix1 = makeRandomAdjMatrix(4);
+        
+        System.out.println("Starting Matrix:");
+        for(int[] arr: matrix1){
+            System.out.println(Arrays.toString(arr));
+        }
+        
         System.out.println();
         System.out.println();
-
-
-        //Question 2
+                            
+        WeightedGraph graph1 = new WeightedGraph(matrix1);
         
-        start = System.currentTimeMillis();
-        System.out.println("Undirected Graph with 10 nodes");
-        System.out.println(undirected10.connectedComponentsToStringBuilder());
+        int[][] finished1 = graph1.floyd();
+        
+        System.out.println("Finished Matrix:");
+        for(int[] arr: finished1){
+            System.out.println(Arrays.toString(arr));
+        }
+        
         end = System.currentTimeMillis();
-        System.out.println("Time to calculate connected components an undirected graph with 10 nodes : " + (end- start) + " ms");
         
-        start = System.currentTimeMillis();
-        System.out.println("Undirected Graph with 100 nodes");
-        System.out.println(undirected100.connectedComponentsToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to calculate connected components an undirected graph with 100 nodes : " + (end- start) + " ms");
-        
-        start = System.currentTimeMillis();
-        System.out.println("Undirected Graph with 1000 nodes");
-        System.out.println(undirected1000.connectedComponentsToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to calculate connected components an undirected graph with 1000 nodes : " + (end- start) + " ms");
-        
-        
-        //Question 3
-        
-        //Directed 10 node
-        start = System.currentTimeMillis();
-        Graph directed10 = new Graph(10,  true);
-        System.out.println(directed10.adjacencyListToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to generate and print a directed graph with 10 nodes : " + (end- start) + " ms");
+        System.out.println("Constructing and running Floyd's on a graph with 4 nodes took " + (end-start) + " ms");
         System.out.println();
         System.out.println();
         
         
-        //Directed 100 node
+        
+        
+        
+        //Attempting Floyd's on a 10 node matrix
         start = System.currentTimeMillis();
-        Graph directed100 = new Graph(100,  true);
-        System.out.println(directed100.adjacencyListToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to generate and print a directed graph with 100 nodes : " + (end- start) + " ms");
+        int[][] matrix2 = makeRandomAdjMatrix(10);
+        
+        System.out.println("Starting Matrix:");
+        for(int[] arr: matrix2){
+            System.out.println(Arrays.toString(arr));
+        }
+        
         System.out.println();
         System.out.println();
-
-
-        //Directed 1000 node
-        start = System.currentTimeMillis();
-        Graph directed1000 = new Graph(1000,  true);
-        System.out.println(directed1000.adjacencyListToStringBuilder());
+                            
+        WeightedGraph graph2 = new WeightedGraph(matrix2);
+        
+        int[][] finished2 = graph2.floyd();
+        
+        System.out.println("Finished Matrix:");
+        for(int[] arr: finished2){
+            System.out.println(Arrays.toString(arr));
+        }
+        
         end = System.currentTimeMillis();
-        System.out.println("Time to generate and print a directed graph with 1000 nodes : " + (end- start) + " ms");
+        
+        System.out.println("Constructing and running Floyd's on a graph with 10 nodes took " + (end-start) + " ms");
         System.out.println();
         System.out.println();
         
         
-        //Directed 10000
-        start = System.currentTimeMillis();
-        Graph directed10000 = new Graph(10000,  true);
-        //System.out.println(directed10000.adjacencyListToStringBuilder());
-        end = System.currentTimeMillis();
-        System.out.println("Time to generate and print a directed graph with 10000 nodes : " + (end- start) + " ms");
-
-
-        start = System.currentTimeMillis();
-        System.out.println("Directed Graph with 10 nodes");
-        System.out.println(directed10.topologicalSort());
-        end = System.currentTimeMillis();
-        System.out.println("Time to topologically sort a directed graph with 10 nodes : " + (end- start) + " ms");
         
         
+        
+        //Attempting Floyd's on a 100 node matrix
         start = System.currentTimeMillis();
-        System.out.println("Directed Graph with 100 nodes");
-        System.out.println(directed100.topologicalSort());
+        int[][] matrix3 = makeRandomAdjMatrix(100);
+        
+        System.out.println("Starting Matrix:");
+        for(int[] arr: matrix3){
+            System.out.println(Arrays.toString(arr));
+        }
+                            
+        WeightedGraph graph3 = new WeightedGraph(matrix3);
+        
+        int[][] finished3 = graph3.floyd();
+        
+        System.out.println("Finished Matrix:");
+        for(int[] arr: finished3){
+            System.out.println(Arrays.toString(arr));
+        }
+        
         end = System.currentTimeMillis();
-        System.out.println("Time to topologically sort a directed graph with 100 nodes : " + (end- start) + " ms");
+        
+        System.out.println("Constructing and running Floyd's on a graph with 100 nodes took " + (end-start) + " ms");
+        System.out.println();
+        System.out.println();
         
         
+        
+        
+        
+        //Attempting Floyd's on a 1000 node matrix
         start = System.currentTimeMillis();
-        System.out.println("Directed Graph with 1000 nodes");
-        System.out.println(directed1000.topologicalSort());
+        int[][] matrix4 = makeRandomAdjMatrix(1000);
+        
+//        System.out.println("Starting Matrix:");
+//        for(int[] arr: matrix4){
+//            System.out.println(Arrays.toString(arr));
+//        }
+                            
+        WeightedGraph graph4 = new WeightedGraph(matrix4);
+        
+        int[][] finished4 = graph4.floyd();
+        
+//        System.out.println("Finished Matrix:");
+//        for(int[] arr: finished4){
+//            System.out.println(Arrays.toString(arr));
+//        }
+        
         end = System.currentTimeMillis();
-        System.out.println("Time to topologically sort a directed graph with 1000 nodes : " + (end- start) + " ms");
+        
+        System.out.println("Constructing and running Floyd's on a graph with 1000 nodes took " + (end-start) + " ms (not including printing graph and output)");
+        System.out.println();
+        System.out.println();
+          
+        
+        
+        
+        
+        //Attempting Floyd's on a 10000 node matrix
+        start = System.currentTimeMillis();
+        int[][] matrix5 = makeRandomAdjMatrix(10000);
+        
+//        System.out.println("Starting Matrix:");
+//        for(int[] arr: matrix5){
+//            System.out.println(Arrays.toString(arr));
+//        }
+                            
+        WeightedGraph graph5 = new WeightedGraph(matrix5);
+        
+        int[][] finished5 = graph5.floyd();
+        
+//        System.out.println("Finished Matrix:");
+//        for(int[] arr: finished5){
+//            System.out.println(Arrays.toString(arr));
+//        }
+        
+        end = System.currentTimeMillis();
+        
+        System.out.println("Constructing and running Floyd's on a graph with 10000 nodes took " + (end-start) + " ms (not including printing graph and output)");
+        System.out.println();
+        System.out.println();
     }
 }
