@@ -47,7 +47,7 @@ public class GraphADT {
     private static int[][] makeRandomUndirectedAdjMatrix(int nodes){
         int[][] matrix = new int[nodes][nodes];
         
-        for(int i = 0; i < nodes/2 +1 ; i++){
+        for(int i = 0; i < nodes +1 ; i++){
             for(int j = i; j < nodes; j++){
                 if (i == j) matrix[i][j] = 0;
                 else{
@@ -242,14 +242,14 @@ public class GraphADT {
 //                            {3,9999999,2,999999}};
 
 
-        int[][] matrix1 = makeRandomUndirectedAdjMatrix(4);
+        int[][] matrix1 = makeRandomUndirectedAdjMatrix(1000);
         
         System.out.println("Starting Matrix:");
-        for(int[] arr: matrix1){
-            System.out.println(Arrays.toString(arr));
-        }
+//        for(int[] arr: matrix1){
+//            System.out.println(Arrays.toString(arr));
+//        }
         
-        System.out.println();
+        System.out.println("1");
         System.out.println();
                             
         WeightedGraph graph1 = new WeightedGraph(matrix1);

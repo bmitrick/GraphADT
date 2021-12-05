@@ -80,14 +80,17 @@ public class WeightedGraph {
                 int x = i;
                 
                 for(int y = 0; y < adjacencyMatrix.length; y++){
-                    //Check you arent looking at the path from one node to itself & that y has not already been visited
-                    if(y != x && !visited.contains(y)){
-                        
-                        //If the edge from node x to node y is the cheapest found so far, update cheapestEdgeWeight and its coords
-                        if(adjacencyMatrix[x][y] < cheapestEdgeWeight){
-                            cheapestEdgeWeight = adjacencyMatrix[x][y];
-                            cheapestEdgeX = x;
-                            cheapestEdgeY = y;
+                    
+                    if(!visited.contains(y)){
+                        //Check you arent looking at the path from one node to itself & that y has not already been visited
+                        if(y != x){
+
+                            //If the edge from node x to node y is the cheapest found so far, update cheapestEdgeWeight and its coords
+                            if(adjacencyMatrix[x][y] < cheapestEdgeWeight){
+                                cheapestEdgeWeight = adjacencyMatrix[x][y];
+                                cheapestEdgeX = x;
+                                cheapestEdgeY = y;
+                            }
                         }
                     }
                 }
