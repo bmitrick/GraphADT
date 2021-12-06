@@ -19,7 +19,22 @@ public class GraphADT {
     public static void main(String[] args){
         //testFloyd();
         
-        testPrim();
+        //testPrim();
+        
+//        int[][] matrix1  = {{999999, 2, 1, 4},
+//                            {2, 999999, 4, 3},
+//                            {1, 4, 999999, 999999},
+//                            {4, 3, 999999, 999999}};
+
+        int[][] matrix1 = makeRandomUndirectedAdjMatrix(10);
+        
+        WeightedGraph g = new WeightedGraph(matrix1);
+        
+        int[][] result = g.kruskal();
+        
+        for(int[] arr: result){
+            System.out.println(Arrays.toString(arr));
+        }
     }
     
     private static int[][] makeRandomDirectedAdjMatrix(int nodes){

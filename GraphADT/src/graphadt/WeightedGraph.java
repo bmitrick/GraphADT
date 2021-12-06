@@ -112,4 +112,88 @@ public class WeightedGraph {
         return mst;
     }
     
+    public int[][] kruskal(){
+        int[][] mst = new int[adjacencyMatrix.length][adjacencyMatrix.length];
+        
+        for(int[] i: mst){
+            Arrays.fill(i, 999999);
+        }
+        
+        ArrayList<int[]> sortedEdges = new ArrayList<>();
+        
+        //Make an ArrayList of edges formatted as [starting node, ending node, weight] sorted by weight
+        for(int k = 1; k < 12; k++){
+            for(int i = 0; i < adjacencyMatrix.length; i++){
+                for(int j = 0; j < adjacencyMatrix.length; j++){
+                    if(adjacencyMatrix[i][j] == k){
+                        int[] temp = new int[3];
+                        temp[0] = i;
+                        temp[1] = j;
+                        temp[2] = adjacencyMatrix[i][j];
+                        
+                        //Double checks the edges is not already in there but labled as its inverse
+                        sortedEdges.add(temp);
+                    }
+                }
+            }
+        }
+        
+        for(int[] arr: sortedEdges){
+            System.out.println(Arrays.toString(arr));
+        }
+        System.out.println();
+        System.out.println();
+        
+        //Builds MST by adding in the edges until every node has been reached
+        ArrayList<Integer> visitedNodes = new ArrayList<>();
+        
+        int edgeCount = 0;
+        
+        while(true){
+            //Pulls the shortest unused edge
+            int[] working = sortedEdges.get(0);
+            
+            System.out.println();
+            System.out.println(Arrays.toString(working));
+            
+            //If the ending node has not already been visited
+            if(!(visitedNodes.contains(working[1]) && visitedNodes.contains(working[0]))){
+                System.out.println("not contained");
+                int i = working[0];
+                int j = working[1];
+                
+                mst[i][j] = working[2];
+                mst[j][i] = working[2];
+                
+                if(!visitedNodes.contains(j)){
+                    visitedNodes.add(j);
+                }
+                if(!visitedNodes.contains(i)){
+                    visitedNodes.add(i);
+                }
+                
+                edgeCount++;
+            }
+            
+            sortedEdges.remove(0);
+            
+            if(edgeCount >= mst.length){
+                WeightedGraph g = new WeightedGraph(mst);
+                
+                int[][] shortestPath = g.prim();
+                
+                boolean noPath = false;
+                
+                for(int[] arr: shortestPath){
+                    for(int i: arr){
+                        if(i == 999999) noPath = true;
+                    }
+                }
+                
+                if(!noPath) break;
+            }
+        } 
+        
+        return mst;
+    }
 }
